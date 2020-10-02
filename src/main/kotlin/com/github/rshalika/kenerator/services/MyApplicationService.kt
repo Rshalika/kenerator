@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.rshalika.kenerator.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.rshalika.kenerator.MyBundle
 
 class MyApplicationService {
 
