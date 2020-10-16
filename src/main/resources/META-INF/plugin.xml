@@ -1,19 +1,34 @@
 <idea-plugin>
-    <id>org.jetbrains.plugins.template</id>
-    <name>Template</name>
-    <vendor>JetBrains</vendor>
+    <id>com.strawhats.kenerator</id>
+    <name>Kenerator</name>
+    <vendor>StrawHats</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="org.jetbrains.plugins.template.services.MyApplicationService"/>
-        <projectService serviceImplementation="org.jetbrains.plugins.template.services.MyProjectService"/>
+        <applicationService serviceImplementation="com.strawhats.kenerator.services.MyApplicationService"/>
+        <projectService serviceImplementation="com.strawhats.kenerator.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="org.jetbrains.plugins.template.listeners.MyProjectManagerListener"
+        <listener class="com.strawhats.kenerator.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
+
+    <actions>
+
+        <group id="com.strawhats.kenerator.actions.GenerateMenu" text="Kenerator" description="Kenerator menu"
+               class="com.strawhats.kenerator.actions.GenerateAction" popup="true">
+
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after"
+                          relative-to-action="ProjectViewPopupMenuRefactoringGroup"/>
+
+            <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="JavaGenerateGroup2"/>
+        </group>
+
+    </actions>
 </idea-plugin>

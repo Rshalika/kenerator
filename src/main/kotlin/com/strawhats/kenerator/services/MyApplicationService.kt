@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.strawhats.kenerator.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.strawhats.kenerator.MyBundle
 
 class MyApplicationService {
 
