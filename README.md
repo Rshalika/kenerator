@@ -1,8 +1,8 @@
-# kenerator
+# Kenerator
 
 ![Build](https://github.com/Rshalika/kenerator/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/com.strawhats.kenerator.svg)](https://plugins.jetbrains.com/plugin/com.strawhats.kenerator)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.strawhats.kenerator.svg)](https://plugins.jetbrains.com/plugin/com.strawhats.kenerator)
 
 ## Template ToDo list
 - [x] Create a new [IntelliJ Platform Plugin Template][template] project.

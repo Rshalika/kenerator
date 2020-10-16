@@ -130,7 +130,7 @@ tasks {
 
     publishPlugin {
         dependsOn("patchChangelog")
-        token(System.getenv("PUBLISH_TOKEN"))
+        token("perm:cnNoYWwxMw==.OTItMjcxMA==.ONe4t5dIBYhryyJi8M6Eubg5AFSSQE")
         channels(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first())
     }
 }
