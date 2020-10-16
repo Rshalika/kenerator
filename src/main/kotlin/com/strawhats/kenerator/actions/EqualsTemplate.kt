@@ -12,9 +12,9 @@ class EqualsTemplate : ActionTemplate {
 
 
     override fun getFunctionDeclaration(fieldList: List<String>, className: String?): String {
-        val fieldsText = fieldList.joinToString(" && \n") { "this.${it} == other.${it}" }
-        return """ override fun equals(other: Any?): Boolean = other is $className &&
-                                super.equals(other) &&   
-                                $fieldsText """
+        val fieldsText = fieldList.joinToString(" \n && ") { "$it == other.${it}" }
+        return """ override fun equals(other: Any?): Boolean = other is $className
+                                && super.equals(other)
+                                && $fieldsText """
     }
 }
