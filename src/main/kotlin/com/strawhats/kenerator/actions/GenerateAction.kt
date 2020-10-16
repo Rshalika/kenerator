@@ -1,52 +1,47 @@
 package com.strawhats.kenerator.actions
 
-import com.intellij.openapi.actionSystem.*
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Caret
-import com.intellij.psi.util.PsiTreeUtil
-import org.jetbrains.kotlin.psi.KtClassBody
+import com.intellij.psi.PsiClass
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.KtPsiFactory
 
+open class GenerateAction(private val template: ActionTemplate) : AnAction() {
 
-class GenerateAction : ActionGroup() {
-
-    override fun hideIfNoVisibleChildren(): Boolean {
-        return false
+    init {
+        templatePresentation.description = template.description
+        templatePresentation.setText(template.name, false)
     }
 
-    override fun disableIfNoVisibleChildren(): Boolean {
-        return false
-    }
+    override fun actionPerformed(event: AnActionEvent) {
 
-    override fun getChildren(event: AnActionEvent?): Array<AnAction> {
-        if (event == null) {
-            return AnAction.EMPTY_ARRAY
+
+        val ktFile = (event.getData(LangDataKeys.PSI_FILE) as KtFile)
+        ktFile.classes.forEach { clazz ->
+            val fieldList = getFieldList(clazz).map { it.name }
+            val funDecl = template.getFunctionDeclaration(fieldList, clazz.name)
+            val function = KtPsiFactory(event.project).createFunction(funDecl)
+            addFunctionToClass(ktFile, clazz, event, function)
         }
-        PlatformDataKeys.PROJECT.getData(event.dataContext) ?: return EMPTY_ARRAY
-
-        val file: KtFile = (event.dataContext.getData(LangDataKeys.PSI_FILE) as? KtFile) ?: return EMPTY_ARRAY
-
-        val caret: Caret? = event.dataContext.getData(LangDataKeys.CARET)
-        val isProjectView = caret == null
-
-        if (!isProjectView) {
-            // EditorPopup menu
-            val element = file.findElementAt(caret!!.offset)!!
-            val parentOfType = PsiTreeUtil.getParentOfType(element, KtClassBody::class.java, false)
-            parentOfType
-                    ?: // not inside a class
-                    return EMPTY_ARRAY
-        }
-        return arrayOf(getEqualsAction())
 
     }
 
-    private fun getEqualsAction(): AnAction {
-        val actionId = "kenerator.Menu.Action.Equals"
-        var action = ActionManager.getInstance().getAction(actionId)
-        if (action == null) {
-            action = EqualsAction()
-            ActionManager.getInstance().registerAction(actionId, action)
+    private fun addFunctionToClass(ktFile: KtFile, clazz: PsiClass, event: AnActionEvent, function: KtNamedFunction) {
+        val navigationElement = clazz.navigationElement
+        WriteCommandAction.runWriteCommandAction(event.project) {
+            val caret: Caret? = event.dataContext.getData(LangDataKeys.CARET)
+            caret?.let {
+                ktFile.findElementAt(it.offset)?.let { elem ->
+                    navigationElement.addAfter(function, elem.prevSibling)
+                }
+            }
         }
-        return action
     }
+
+    private fun getFieldList(clazz: PsiClass) =
+            clazz.fields.filter { it.modifierList?.hasExplicitModifier("static") == false }
 }

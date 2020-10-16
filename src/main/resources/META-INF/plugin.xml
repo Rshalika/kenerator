@@ -22,7 +22,7 @@
     <actions>
 
         <group id="com.strawhats.kenerator.actions.GenerateMenu" text="Kenerator" description="Kenerator menu"
-               class="com.strawhats.kenerator.actions.GenerateAction" popup="true">
+               class="com.strawhats.kenerator.actions.GenerateActionGroup" popup="true">
 
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after"
                           relative-to-action="ProjectViewPopupMenuRefactoringGroup"/>
